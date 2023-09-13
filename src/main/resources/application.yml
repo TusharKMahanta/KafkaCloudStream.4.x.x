@@ -1,0 +1,40 @@
+spring.cloud.stream.binders:
+  my-kafka-binder:
+    type: kafka
+    default-candidate: true
+    environment.spring.cloud.stream.binder:
+      broker: "localhost"
+      default-broker-port: "9092"
+  external-kafka-binder:
+    type: kafka
+    default-candidate: true
+    environment.spring.cloud.stream.binder:
+      broker: "localhost"
+      default-broker-port: "9092"
+
+spring.cloud:
+    function:
+      definition: consumerBinding;consumerBinding1;dlqBinding
+    stream.bindings:
+        consumerBinding-in-0:
+          binder: my-kafka-binder
+          destination: batch-out
+          group: test
+          consumer:
+            enableDlq: true
+        consumerBinding1-in-0:
+          binder: external-kafka-binder
+          destination: batch-out-1
+          group: test1
+          consumer:
+            enableDlq: true
+        dlqBinding-in-0:
+          binder: external-kafka-binder
+          destination: DLQ
+          group: test1
+          consumer:
+            enableDlq: true
+
+dlq.kafka:
+  brokers: "localhost:9092"
+  topic: "DLQ"
