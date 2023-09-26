@@ -1,5 +1,7 @@
 package com.hh.kcs.consumers;
 
+import com.hh.kcs.config.circuitbreaker.PauseOnFailure;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,14 +10,18 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Configuration
+@Slf4j
 public class KafkaBindings {
 
     @Bean
+    @PauseOnFailure
     public Consumer<String> consumerBinding() {
+        log.info("Hello Tushar");
         return s -> System.out.println("batch-out -> " + s);
     }
 
     @Bean
+    @PauseOnFailure
     public Consumer<String> consumerBinding1() {
         return s -> {
             //System.out.println("batch-out -> " + s);
@@ -46,5 +52,4 @@ public class KafkaBindings {
             return "new data";
         };
     }
-
 }

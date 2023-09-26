@@ -22,6 +22,12 @@ ext {
 dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.0.2'
+	implementation 'ch.qos.logback:logback-core:1.4.7'
+	implementation 'ch.qos.logback:logback-classic:1.4.7'
+	implementation "org.projectlombok:lombok:1.18.30"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 }

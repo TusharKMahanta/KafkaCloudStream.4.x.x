@@ -39,7 +39,7 @@ spring.cloud:
           destination: batch-out
         producerBinding-out-0:
           binder: my-kafka-binder
-          destination: batch-in
+          destination: batch-out-1
         dlqBinding-in-0:
           binder: external-kafka-binder
           destination: DLQ
