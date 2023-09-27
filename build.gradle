@@ -24,8 +24,12 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.0.2'
+
+	//for logback
 	implementation 'ch.qos.logback:logback-core:1.4.7'
 	implementation 'ch.qos.logback:logback-classic:1.4.7'
+
+	//for lombok annotation support
 	implementation "org.projectlombok:lombok:1.18.30"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

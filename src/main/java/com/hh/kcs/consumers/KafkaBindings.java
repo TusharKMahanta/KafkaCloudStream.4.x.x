@@ -16,15 +16,14 @@ public class KafkaBindings {
     @Bean
     @PauseOnFailure
     public Consumer<String> consumerBinding() {
-        log.info("Hello Tushar");
-        return s -> System.out.println("batch-out -> " + s);
+        return s -> log.info("batch-out -> " + s);
     }
 
     @Bean
     @PauseOnFailure
     public Consumer<String> consumerBinding1() {
         return s -> {
-            //System.out.println("batch-out -> " + s);
+            //log.info("batch-out -> " + s);
             throw new RuntimeException();
         };
     }
@@ -32,7 +31,7 @@ public class KafkaBindings {
     @Bean
     public Consumer<String> dlqBinding() {
         return s -> {
-            System.out.println("Dead Letter Message -> " + s);
+            log.info("Dead Letter Message -> " + s);
         };
     }
 
