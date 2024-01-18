@@ -1,0 +1,10 @@
+sonar {
+    properties {
+        property 'sonar.host.url', 'http://localhost:9090'
+        property 'sonar.gradle.skipCompile','true'
+        property 'sonar.projectName', 'KafkaCloudStream'
+        property 'sonar.language', 'java'
+        property 'sonar.projectKey', 'KafkaCloudStream'
+        property 'sonar.login', 'squ_10ad1249a8bc7097293ec3cc5c92805f5ffe0ec3'
+    }
+}
