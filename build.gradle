@@ -17,6 +17,8 @@ plugins {
 group = 'com.hh'
 version = '0.0.1-SNAPSHOT'
 
+apply from: 'sonarqube.gradle'
+
 java {
 	sourceCompatibility = '17'
 }
@@ -48,16 +50,28 @@ testing {
 	}
 }
 
-test.finalizedBy(project.tasks.jacocoTestReport)
-
 jacocoTestReport {
 	reports {
 		xml.required = true
 		html.required = true
 		xml.outputLocation = file("${rootProject.projectDir}/build/reports/jacoco/test/jacocoTestReport.xml")
 	}
-	dependsOn test, integrationTest
+	dependsOn test
 }
+jacocoTestCoverageVerification {
+	violationRules {
+		failOnViolation = true
+		rule {
+			limit {
+				minimum = 0.85
+			}
+		}
+	}
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
+jacocoTestReport.finalizedBy(project.tasks.jacocoTestCoverageVerification)
+
 task jacocoIntegrationTestReport(type: JacocoReport, dependsOn: ['integrationTest']) {
 	sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
 	classDirectories.from = files(sourceSets.main.output)
@@ -70,7 +84,22 @@ task jacocoIntegrationTestReport(type: JacocoReport, dependsOn: ['integrationTes
 	}
 }
 
+task jacocoIntegrationTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: ['jacocoIntegrationTestReport']) {
+	sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+	classDirectories.from = files(sourceSets.main.output)
+	executionData.from = layout.buildDirectory.file("jacoco/integrationTest.exec").get().asFile
+	violationRules {
+		failOnViolation = true
+		rule {
+			limit {
+				minimum = 0.7
+			}
+		}
+	}
+}
+
 integrationTest.finalizedBy(project.tasks.jacocoIntegrationTestReport)
+jacocoIntegrationTestReport.finalizedBy(project.tasks.jacocoIntegrationTestCoverageVerification)
 
 configurations {
 	integrationTestImplementation.extendsFrom(testImplementation)
@@ -98,15 +127,3 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 }
 
-sonar {
-	properties {
-		property 'sonar.host.url', 'http://localhost:9090'
-		property 'sonar.gradle.skipCompile', true
-		property 'sonar.projectName', 'KafkaCloudStream'
-		property 'sonar.language', 'java'
-		property 'sonar.projectKey', 'KafkaCloudStream'
-		property 'sonar.token', 'squ_10ad1249a8bc7097293ec3cc5c92805f5ffe0ec3'
-		property "sonar.java.codeCoveragePlugin", "jacoco"
-		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.buildDir}/reports/jacoco/integrationTest/jacocoIntegrationTestReport.xml"
-	}
-}

@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaEventProcessingService implements IKafkaEventProcessingService {
-    @Autowired
-    IEventProcessingService eventProcessingService;
+
+    private IEventProcessingService eventProcessingService;
+    public KafkaEventProcessingService( @Autowired
+                                        IEventProcessingService eventProcessingService){
+        this.eventProcessingService=eventProcessingService;
+    }
     @NewSpan
     public void processEvent(String event){
         log.info("KafkaEventProcessingService -> " + event);
