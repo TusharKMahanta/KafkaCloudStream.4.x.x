@@ -1,0 +1,29 @@
+spring.main.allow-bean-definition-overriding: true # To override the existing bean with mock bean
+
+spring.kafka:
+  bootstrap-servers: ${fps.testcontainer.kafka.url}  # Required for kafka admin client configuration
+
+spring.cloud.stream.binders:
+  my-kafka-binder:
+    environment.spring.cloud.stream.binder:
+      brokers: ${fps.testcontainer.kafka.url}
+  external-kafka-binder:
+    environment.spring.cloud.stream.binder:
+      brokers: ${fps.testcontainer.kafka.url}
+spring.cloud:
+  function:
+    definition: consumerBinding;consumerBinding1;processorBinding;producerBinding;dlqBinding;integrationTestConsumerBinding
+  stream.bindings:
+    integrationTestConsumerBinding-in-0:
+      binder: my-kafka-binder
+      destination: batch-out
+      group: test123
+
+dlq.kafka:
+  brokers: ${fps.testcontainer.kafka.url}
+
+hh.couchbase.cluster:
+  connectionString: ${fps.testcontainer.couchbase.url}
+
+hh.service.location:
+  baseUrl: ${fps.testcontainer.wiremock.url}

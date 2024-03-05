@@ -3,14 +3,12 @@ spring.cloud.stream.binders:
     type: kafka
     default-candidate: true
     environment.spring.cloud.stream.binder:
-      broker: "localhost"
-      default-broker-port: "9092"
+      brokers: "localhost"
   external-kafka-binder:
     type: kafka
     default-candidate: true
     environment.spring.cloud.stream.binder:
-      broker: "localhost"
-      default-broker-port: "9092"
+      brokers: "localhost"
 
 spring.cloud:
     function:
@@ -48,3 +46,9 @@ spring.cloud:
 dlq.kafka:
   brokers: "localhost:9092"
   topic: "DLQ"
+
+hh.couchbase.cluster:
+  connectionString: ''
+  username: 'hhbucket'
+  password: 'hhbucket'
+  bucketName: 'hhbucket'

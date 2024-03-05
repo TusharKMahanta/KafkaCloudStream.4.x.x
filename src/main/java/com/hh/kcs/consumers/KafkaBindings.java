@@ -2,8 +2,6 @@ package com.hh.kcs.consumers;
 
 import com.hh.kcs.config.circuitbreaker.PauseOnFailure;
 import com.hh.kcs.services.IKafkaEventProcessingService;
-import io.micrometer.tracing.Span;
-import io.micrometer.tracing.Tracer;
 import io.micrometer.tracing.annotation.NewSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -32,13 +30,11 @@ public class KafkaBindings {
     @PauseOnFailure
     @NewSpan
     public Consumer<String> consumerBinding1() {
-        return new Consumer<String>(){
-            public void accept(String s){
+        return s ->{
                 UUID uuid=UUID.randomUUID();
                 MDC.put("traceId",uuid.toString());
                 log.info("KafkaBindings batch-out -> " + s+" Trace Id::"+ uuid.toString());
                 kafkaEventProcessingService.processEvent(s);
-            }
         };
        /* s -> {
                 log.info("batch-out -> " + s);
